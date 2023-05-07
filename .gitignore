@@ -1,0 +1,10 @@
+.terraform*
+terraform.tfstate*
+argo-cd/charts
+
+*values.key.enc.yaml
+.sops.yaml
+infoshare-2023.drawio
+Notes*.md
+
+app/src/app

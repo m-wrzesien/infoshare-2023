@@ -1,0 +1,88 @@
+argo-cd:
+    configs:
+        credentialTemplates:
+            # github-ssh-creds:
+            #     url: git@github.com
+            #     sshPrivateKey: |-
+            #         -----BEGIN OPENSSH PRIVATE KEY-----
+            #         SOME_PRIVATE_KEY
+            #         -----END OPENSSH PRIVATE KEY-----
+        clusterCredentials:
+            # - name: k8s-operator
+            #   server: https://kubernetes.default.svc
+            #   labels:
+            #       env: pro
+            #   config:
+            #       tlsClientConfig:
+            #           insecure: false
+            # - name: k8s-pro
+            #   server: https://IP
+            #   labels:
+            #       env: pro
+            #   config:
+            #       bearerToken: SECRET
+            #       tlsClientConfig:
+            #           insecure: false
+            #           caData: SECRET
+            # - name: k8s-staging
+            #   server: https://IP
+            #   labels:
+            #       env: staging
+            #   config:
+            #       bearerToken: SECRET
+            #       tlsClientConfig:
+            #           insecure: false
+            #           caData: SECRET
+        repositories:
+            infoshare-2023:
+                url: git@github.com:m-wrzesien/infoshare-2023.git
+                type: git
+        secret:
+            # Hashed password which is "admin"
+            argocdServerAdminPassword: $2a$10$HQzpoY3pe6U1NO497OkWMuVTGRV/FMznFM3n3AKZye5OokSodRDj.
+            # ArgoCD Helm chart by default change this value to current time on every apply
+            argocdServerAdminPasswordMtime: "2006-01-02T15:04:05Z"
+            # argocdServerAdminPasswordMtime: "2023-05-25T10:50:00Z"
+    ## Controller
+    controller:
+        resources:
+            requests:
+                cpu: 100m
+                memory: 0.5Gi
+            limits:
+                cpu: 1000m
+                memory: 1Gi
+        serviceAccount:
+            ## Annotations applied to created service account
+            annotations:
+                iam.gke.io/gcp-service-account: argocd@esky-common.iam.gserviceaccount.com
+    ## Server
+    server:
+        resources:
+            requests:
+                cpu: 100m
+                memory: 200Mi
+            limits:
+                cpu: 1000m
+                memory: 1Gi
+    ## Repo Server
+    repoServer:
+        resources:
+            requests:
+                cpu: 100m
+                memory: 500Mi
+            limits:
+                cpu: 1000m
+                memory: 1Gi
+        serviceAccount:
+            ## Annotations applied to created service account
+            annotations:
+                iam.gke.io/gcp-service-account: argocd@esky-common.iam.gserviceaccount.com
+    dex:
+        resources:
+            requests:
+                cpu: 50m
+                memory: 50Mi
+            limits:
+                cpu: 200m
+                memory: 200Mi

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Welcome to{{if .ReleaseName }} Helm Release "{{.ReleaseName}}"{{else}} app{{end}}!</title>
+
+    <style>
+        html {
+            color-scheme: light dark;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Welcome to{{if .ReleaseName }} Helm Release "{{.ReleaseName}}"{{else}} app{{end}}!</h1>
+    {{if .ClusterName}}
+    <p>I am deployed on cluster "{{.ClusterName}}"</p>
+    {{- end}}
+    <p>Thank you for attending our Infoshare 2023 speech!</p>
+</body>
+
+</html>
