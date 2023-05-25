@@ -1,0 +1,19 @@
+# Deploy all Kubernetes manifests found at this directory in this repo, and automaticaly synchronise the state of those manifest (including deleting those unnecessary)
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: argo-apps
+  namespace: argocd
+spec:
+  destination:
+    name: k8s-operator
+    namespace: argocd
+  project: default
+  source:
+    path: argo-apps
+    repoURL: git@github.com:m-wrzesien/infoshare-2023.git
+    targetRevision: master
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
