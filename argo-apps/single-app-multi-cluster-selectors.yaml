@@ -1,0 +1,31 @@
+# Deploy helm chart found in this repo on every cluster registed at Argo CD that has label 'env' with value 'staging' on namespace 'default'
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: single-app-multi-cluster-selectors
+  namespace: argocd
+spec:
+  generators:
+    # https://argo-cd.readthedocs.io/en/stable/operator-manual/applicationset/Generators-Cluster/
+    - clusters:
+        # select only cluster, that have label 'env' with value 'staging'
+        selector:
+          matchLabels:
+            env: 'staging'
+  template:
+    metadata:
+      name: "single-app-multi-cluster-selectors-{{name}}"
+    spec:
+      destination:
+        name: "{{name}}"
+        namespace: default
+      project: default
+      source:
+        path: app/chart
+        repoURL: git@github.com:m-wrzesien/infoshare-2023.git
+        targetRevision: master
+        helm:
+          releaseName: single-app-multi-cluster-selectors
+          valueFiles:
+            - values.yaml
+            - values.multiClusterSelectors.yaml
